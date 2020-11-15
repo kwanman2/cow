@@ -1,0 +1,11 @@
+ncpux1 16
+ncpux2 8
+ncpux3 2
+ntot 256
+filename grmhd
+dirfile /home1/02570/janedai/radsuperedd/
+rundir /scratch/02570/janedai/radsupereddtest
+Wed Apr 27 12:03:48 CDT 2016
+TACC: Starting up job 6950900
+TACC: Setting up parallel environment for MVAPICH2+mpispawn.
+TACC: Starting parallel tasks...

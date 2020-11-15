@@ -1,0 +1,105 @@
+/*! \file ./docs//quick_start_guide/5.txt
+~~~~
+5) Convert fieldline files and gdump files from HARM into V5D files
+Version 6 Created by Jonathan M. on 13 Feb 2013.
+
+
+0)
+
+git clone git@harm.unfuddle.com:harm/harmgit.git
+cd harmgit
+mkdir run
+mkdir run/dumps
+# copy over coordparms.dat to run and fieldline????.bin (and ????-1 and ????+1 for current calculation) and gdump.bin to run/dumps
+cd run
+cp ../scripts/v5dfield\/<all> .
+cp ../docs/howtouse_joninterp.localsetup.new.sh .
+# emacs howtouse_joninterp.localsetup.new.sh &
+cd ..
+ln -s initboundcode/init.fishmon.c init.c
+ln -s initboundcode/init.fishmon.h init.h
+ln -s initboundcode/bounds.fishmon.c bounds.c
+make superclean ; make prepiinterp ; make iinterp ; cp iinterp run/
+make superclean ; make prepbin2txt ; make bin2txt ; cp bin2txt run/
+
+
+1) Assuming harmgit tree is at ~/harmgit/ and the run directory is in ~/harmgit/run/ , then:
+
+cd ~harmgit/
+git pull   [THIS GETS latest version with ~/harmgit/scripts/v5dfield stuff needed below]
+cd ~/harmgit/run
+cp ~/harmgit/scripts/v5dfield\/<all> .
+#cp ~/harmgit/docs/howtouse_joninterp.sh .
+#cp ~/harmgit/docs/howtouse_joninterp.localsetup.sh .  # this one is setup to be used with local harm ran like in earlier steps.
+cp ~/harmgit/docs/howtouse_joninterp.localsetup.new.sh .  # this one setup to use any harmgit/run/ stuff.
+
+Can edit this howtouse_joninterp.sh script:
+
+1) Choose "system" (OR create own system case for your system, by going through script and editing system conditionals as required)
+
+2) Choose "whichmodel" OR for new run edit script for your case (i.e. follow through script and add new "whichmodel" case for everywhere whichmodel appears.  This includes the "dumpnum" that is the dump (fieldline file) number.
+
+3) Read through comments in script.  Have to (e.g.) make sure iinterp compiled with correct case for OLDERHEADER
+
+4) boxn? sets Cartesian resolution
+
+5) box?? sets the Cartesian box dimensions
+
+5b) set whichoutput (e.g. DATATYPE==18 inside jon_interp.c corresponds to whichoutput=18)
+
+5c) define correct headv5d file (e.g. headout18.v5d for DATATYPE==18)
+
+5d) After editing the script, one can run this from the "run" directory after running harm to get some fieldline files.
+
+BUT, I recommend (as normal) running *PER LINE* to ensure you really setup things correctly.  If there's a conditional, follow it correctly.
+
+5e) If did not produce all files correctly, rm -rf currentout*.v5d or delete bad link
+
+
+6) Then run vis5d: 
+
+6a) get and compile code: https://github.com/pseudotensor/
+
+6b) Run code (script is setup to do so):
+
+vis5d <v5dfilenameyoujustcreated>
+
+NOTE: If you use Nvidia GT630M or such optimus chips with 2 chips on laptop, then setup bumblebee and see: optirun vis5d <etc>
+
+OR scp from ki-jmck and view that file:
+
+scp <user>@ki-jmck.slac.stanford.edu:/tmp/fieldline5700.cart.bin.boxzh40.box100x100x100.out18.modelsashaa99t1.5708.v5d .
+
+vis5d fieldline5700.cart.bin.boxzh40.box100x100x100.out18.modelsashaa99t1.5708.v5d
+
+NOTE: Again, use optirun vis5d if using bumblebee and want accelerated 3D.
+
+7) The v5d file (with format out18 as created by howtouse_joninterp.sh script that uses iinterp):
+
+density: rho0: rest-mass density
+ug : internal energy density
+uu0: u^t
+bsqorho: b^2/rho0
+lrho : log(rho0)
+neglrho : -log(rho0)
+lbsq : log(b^2)
+Rcyl : Cylindrical radius
+W : v_x
+V : v_y
+U : v_z
+W2 : B_x
+V2 : B_y
+U2 : B_z
+posr : r
+posh : \theta
+posph : \phi
+
+
+
+8) To create a fieldline:
+
+
+
+
+~~~~
+*/
