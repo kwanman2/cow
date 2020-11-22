@@ -162,6 +162,7 @@ superclean: cleanall
 	rm -rf objslong objsdepssmcalc.cmd.list objsdepssmcalc objsdepsliaison objsdepsjoninterp objsdepsbin2txt.cmd.list objsdepsbin2txt
 	rm -rf prepbin2txt prepsmcalc
 	rm -rf initbase.defaultnprlists.c
+	#rm -rf deps.puredouble.list deps.manypoints.list deps.onepoint.list	#tom
 	rm -rf *.deps.puredouble.list *.deps.manypoints.list *.deps.onepoint.list
 
 superfclean: cleanall superclean

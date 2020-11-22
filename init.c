@@ -2220,13 +2220,14 @@ int init_global(void)
         int FIELDTYPE=set_fieldtype();
 
  
-        if(a==0.5 && FIELDTYPE==FIELDJONMAD){    //jane: not calling this spin      //tom cow: calling this, -->accretion rate
+        if(a==0.5 && FIELDTYPE==FIELDJONMAD){    //jane: not calling this spin      //tom cow: calling this
           trifprintf("Condition=1%21.15g\n",1);
           //RADNT_RHODONUT/=(2.0*138.0);
           //RADNT_RHODONUT/=(2.8); // Mdot\sim 135Ledd/c^2
           //RADNT_RHODONUT*=(4.4); // Mdot\sim 135Ledd/c^2
           //RADNT_RHODONUT*=(3.75); // Mdot\sim 135Ledd/c^2
-          RADNT_RHODONUT = 7.82865722440474E-09; //tom:
+          RADNT_RHODONUT = 5E-6; //tom: Mdot \sim 5
+          RADNT_RHODONUT /= (90); //tom: try
           trifprintf("After Conditionals: RADNT_RHODONUT=%21.15g\n", RADNT_RHODONUT);
         }
 
@@ -2253,7 +2254,7 @@ int init_global(void)
           RADNT_RHODONUT*=(2.0);//jane:change from 10^7 to 10^6.7
 	      RADNT_RHODONUT*=(4.0);//jane:phi resolution incrased by 2, try to get Mdot~20-30
 		  */ 
-		  RADNT_RHODONUT=7.82865722440474E-09; //tom:result of the above calculations, try to get Mdot~20-30
+		  RADNT_RHODONUT=7.82865722440474E-09; //tom:result of the above calculations, Mdot~15
 		  /*
 		  RADNT_RHODONUT/=(2.0*138.0);
           RADNT_RHODONUT/=(2.8); // Mdot\sim 135Ledd/c^2                                        
@@ -2275,7 +2276,8 @@ int init_global(void)
 
         if(a==0.0 && FIELDTYPE==FIELDJONMAD){	//tom
           trifprintf("Condition=4%21.15g\n",4);
-          RADNT_RHODONUT=7.82865722440474E-09; //tom:try to get Mdot~20-30, see the manipulation in above a=0.8 setting
+          RADNT_RHODONUT=7.82865722440474E-09;
+          RADNT_RHODONUT *= (6.0);  //tom:  Mdot~14
 		  trifprintf("After Conditionals: RADNT_RHODONUT=%21.15g\n",RADNT_RHODONUT);
         }
 
@@ -3604,7 +3606,7 @@ int init_grid_post_set_grid(FTYPE (*prim)[NSTORE2][NSTORE3][NPR], FTYPE (*pstag)
       rin=0.0;      //tom: this means no inner edge
  
       rinfield=20.0; // works for any a for these models
-      routfield=40.0;
+      routfield=80.0;   //tom
 
       //rinfield=Risco;
       //      beta=1E30;
