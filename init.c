@@ -2227,7 +2227,8 @@ int init_global(void)
           //RADNT_RHODONUT*=(4.4); // Mdot\sim 135Ledd/c^2
           //RADNT_RHODONUT*=(3.75); // Mdot\sim 135Ledd/c^2
           RADNT_RHODONUT = 5E-6; //tom: Mdot \sim 5
-          RADNT_RHODONUT /= (90); //tom: try
+          RADNT_RHODONUT *= (70); //tom: Mdot \sim 3000
+          RADNT_RHODONUT *= (2000); //tom: try 26/11 update, *4 is not enough
           trifprintf("After Conditionals: RADNT_RHODONUT=%21.15g\n", RADNT_RHODONUT);
         }
 
@@ -6876,7 +6877,7 @@ static int donut_analytical_solution(int *whichvel, int *whichcoord, int optical
 
   }
   // get density and velocity for torus
-  if(RADNT_DONUTTYPE==DONUTTHINDISK2){              //tom
+  if(RADNT_DONUTTYPE==DONUTTHINDISK2){              //tom: our disk model
 
     int mycoords=BLCOORDS;
     if(*whichcoord!=mycoords){
@@ -6894,7 +6895,7 @@ static int donut_analytical_solution(int *whichvel, int *whichcoord, int optical
       Risco=rmso_calc(PROGRADERISCO);
     }
     else{ // SUPERMADNEW
-      Risco=10.0;       //tom: really?!     //tom: why don't calculate it       //tom: the old simulations in other spin may have wrong Risco, thus wrong density profile ...
+      Risco=10.0;       //tom: really?!     //tom: why don't calculate it       //tom: the old simulations may have wrong Risco too, thus wrong density profile ...
     }
     R = MAX(Rhor,r*sin(th)) ;
 
