@@ -167,14 +167,19 @@
 ///////////////////////////////////
 // BOUND-FREE and other low energy stuff
 #define KAPPA_BF_CODE(rhocode,Tgcode,Trcode) (3.0E25*(ZFACT)*(1.0+XFACT+0.75*YFACT)*((rhocode)*RHOBAR)*prpow((Tgcode)*TEMPBAR,-0.5)*prpow((Trcode)*TEMPBAR,-3.0)*prlog(1.0+1.6*KAPPA_ZETA(Tgcode,Trcode))/OPACITYBAR) // ASSUMPTION: Number of electrons similar to for solar abundances for 1+X+(3/4)Y term.  For Tr,Tg split, see Ramesh notes.
-#define KAPPA_CHIANTIBF_CODE(rhocode,Tgcode,Trcode) (4.0E34*((rhocode*RHOBAR))*(ZFACT/ZSOLAR)*YELE*prpow((Tgcode)*TEMPBAR,-1.7)*prpow((Trcode)*TEMPBAR,-3.0)/OPACITYBAR) // *XFACT literally from Fig 34.1 in Draine book, but for solar n_H\sim n_b\sim 1/cm^3 only
-#define KAPPA_IRON_CODE(rhocode,Tgcode,Trcode) (0.3*((rhocode*RHOBAR))*(ZFACT/ZSOLAR)+exp(-6*prpow(-12+prlog((Tgcode)*TEMPBAR),2))) //tom: iron opacity
-#define KAPPA_HN_CODE(rhocode,Tgcode,Trcode) (1.1E-25*prpow(ZFACT,0.5)*prpow((rhocode)*RHOBAR,0.5)*prpow((Tgcode)*TEMPBAR,7.7)/OPACITYBAR) // other sources cite 2.5E-31 (Z/0.02)(rho)^(1/2)(T)^9
+#define KAPPA_CHIANTIBF_CODE(rhocode,Tgcode,Trcode) (4.0E34*((rhocode*RHOBAR))*(ZFACT/ZSOLAR)*YELE*prpow((Tgcode)*TEMPBAR,-1.7)*prpow((Trcode)*TEMPBAR,-3.0)/OPACITYBAR) // *XFACT literally from Fig 34.1 in Draine book, but for solar n_H\sim n_b\sim 1/cm^3 only    //tom: check
+#define KAPPA_HN_CODE(rhocode,Tgcode,Trcode) (1.1E-25*prpow(ZFACT,0.5)*prpow((rhocode)*RHOBAR,0.5)*prpow((Tgcode)*TEMPBAR,7.7)/OPACITYBAR) // other sources cite 2.5E-31 (Z/0.02)(rho)^(1/2)(T)^9  
 #define KAPPA_MOL_CODE(rhocode,Tgcode,Trcode) (0.1*ZFACT/OPACITYBAR)
-// see opacities.nb
-                                                                            //tom cow: turn on iron opacity & chianti
-#define KAPPA_GENFF_CODE(rhocode,Tgcode,Trcode) (1.0/(1.0/(KAPPA_MOL_CODE(rhocode,Tgcode,Trcode)+KAPPA_HN_CODE(rhocode,Tgcode,Trcode)+KAPPA_IRON_CODE(rhocode,Tgcode,Trcode)) + 1.0/(KAPPA_CHIANTIBF_CODE(rhocode,Tgcode,Trcode)+KAPPA_BF_CODE(rhocode,Tgcode,Trcode)+KAPPA_FF_CODE(rhocode,Tgcode,Trcode))))
-                                                                            //tom: turn on chianti
+#define KAPPA_CHIANTIBF17_CODE(rhocode,Tgcode,Trcode) (3.0E34*((rhocode*RHOBAR))*(0.1+ZFACT/ZSOLAR)*XFACT*(1+XFACT)*prpow((Tgcode)*TEMPBAR,-1.7)*prpow((Trcode)*TEMPBAR,-3.0)/OPACITYBAR) // *XFACT literally from Fig 34.1 in Draine book, but for solar n_H\sim n_b\sim 1/cm^3 only    //tom: 17
+#define KAPPA_IRON_CODE(rhocode,Tgcode,Trcode) (0.3*((rhocode*RHOBAR))*(ZFACT/ZSOLAR)*exp(-6*prpow(-12+prlog((Tgcode)*TEMPBAR),2))/OPACITYBAR) //tom: iron opacity
+#define KAPPA_HN17_CODE(rhocode,Tgcode,Trcode) (3.3E-24*prpow(ZFACT,0.5)*prpow((rhocode)*RHOBAR,0.5)*prpow((Tgcode)*TEMPBAR,7.7)/OPACITYBAR)  //tom: mckinney 17
+#define KAPPA_MOL17_CODE(rhocode,Tgcode,Trcode) (3*ZFACT/OPACITYBAR)  //tom: 17
+#define KAPPA_COPAL_CODE (rhocode,Tgcode,Trcode) (3.0E-13*KAPPA_CHIANTIBF17_CODE(rhocode,Tgcode,Trcode)*prpow((Tgcode)*TEMPBAR,1.6)*prpow((rhocode)*RHOBAR,-0.4)/OPACITYBAR)
+#define KAPPA_HOPAL_CODE (rhocode,Tgcode,Trcode) (1.0E4*prpow((Tgcode)*TEMPBAR,-1.2)*KAPPA_HN17_CODE(rhocode,Tgcode,Trcode)/OPACITYBAR)
+// see opacities.nb  
+                                                                            //tom cow: turn on iron opacity, 'opal' opacity & chianti McKinney 17
+#define KAPPA_GENFF_CODE(rhocode,Tgcode,Trcode) (1.0/(1.0/(KAPPA_MOL17_CODE(rhocode,Tgcode,Trcode)+KAPPA_HN17_CODE(rhocode,Tgcode,Trcode)+KAPPA_HOPAL_CODE(rhocode,Tgcode,Trcode))+ 1.0/KAPPA_COPAL_CODE(rhocode,Tgcode,Trcode) + 1.0/(KAPPA_CHIANTIBF17_CODE(rhocode,Tgcode,Trcode)+KAPPA_BF_CODE(rhocode,Tgcode,Trcode)+KAPPA_FF_CODE(rhocode,Tgcode,Trcode)))+KAPPA_IRON_CODE(rhocode,Tgcode,Trcode))
+                                                                            //tom: turn on chianti      McKinney 15
 //#define KAPPA_GENFF_CODE(rhocode,Tgcode,Trcode) (1.0/(1.0/(KAPPA_MOL_CODE(rhocode,Tgcode,Trcode)+KAPPA_HN_CODE(rhocode,Tgcode,Trcode)) + 1.0/(KAPPA_CHIANTIBF_CODE(rhocode,Tgcode,Trcode)+KAPPA_BF_CODE(rhocode,Tgcode,Trcode)+KAPPA_FF_CODE(rhocode,Tgcode,Trcode)))) // for 1.3E3K \le T \le 1E9K or higher.  Numerically better to have kappa bottom out at low T so no diverent opacity as T->0
 
 //jane: turn off the CHIANTI opacity

@@ -2220,15 +2220,17 @@ int init_global(void)
         int FIELDTYPE=set_fieldtype();
 
  
-        if(a==0.5 && FIELDTYPE==FIELDJONMAD){    //jane: not calling this spin      //tom cow: calling this
+        if(a==0.5 && FIELDTYPE==FIELDJONMAD){    //jane: not calling this spin      //tom cow: calling this     //BH mass: 1e4
           trifprintf("Condition=1%21.15g\n",1);
           //RADNT_RHODONUT/=(2.0*138.0);
           //RADNT_RHODONUT/=(2.8); // Mdot\sim 135Ledd/c^2
           //RADNT_RHODONUT*=(4.4); // Mdot\sim 135Ledd/c^2
           //RADNT_RHODONUT*=(3.75); // Mdot\sim 135Ledd/c^2
-          RADNT_RHODONUT = 5E-6; //tom: Mdot \sim 5
-          RADNT_RHODONUT *= (70); //tom: Mdot \sim 3000
-          RADNT_RHODONUT *= (2000); //tom: try 26/11 update, *4 is not enough
+          RADNT_RHODONUT = 5E-6; //tom: Mdot \sim 4.2     (80x32x16)
+          RADNT_RHODONUT *= (70); //tom: Mdot \sim 120
+          RADNT_RHODONUT *= (2000); //tom: Mdot \sim 46000
+          RADNT_RHODONUT /= (10); //tom: Mdot \sim 10000
+          RADNT_RHODONUT /= (2); //tom: Mdot \sim 9600
           trifprintf("After Conditionals: RADNT_RHODONUT=%21.15g\n", RADNT_RHODONUT);
         }
 
@@ -2275,11 +2277,22 @@ int init_global(void)
           RADNT_RHODONUT*=(1.4); // Mdot\sim 135Ledd/c^2
         }
 
-        if(a==0.0 && FIELDTYPE==FIELDJONMAD){	//tom
+        if(a==0.0 && FIELDTYPE==FIELDJONMAD){	//tom       //BH mass: 5e6
           trifprintf("Condition=4%21.15g\n",4);
           RADNT_RHODONUT=7.82865722440474E-09;
           RADNT_RHODONUT *= (6.0);  //tom:  Mdot~14
 		  trifprintf("After Conditionals: RADNT_RHODONUT=%21.15g\n",RADNT_RHODONUT);
+        }
+
+        if (a == 0.0 && FIELDTYPE == FIELDJONMAD) {	//tom       //BH mass: 1e4
+            trifprintf("Condition=4%21.15g\n", 4);
+            RADNT_RHODONUT = 5E-6; //tom: after *4, Mdot \sim 13     (80x32x16)
+            RADNT_RHODONUT *= (70); //tom: after *4, Mdot \sim 41000
+            RADNT_RHODONUT *= (2000); //tom: Mdot \sim 
+            //RADNT_RHODONUT /= (10); //tom: Mdot \sim 
+            //RADNT_RHODONUT /= (2); //tom: 
+            RADNT_RHODONUT *= (4.0);  //tom:  adjust
+            trifprintf("After Conditionals: RADNT_RHODONUT=%21.15g\n", RADNT_RHODONUT);
         }
 
         if(a==0.0 && FIELDTYPE!=FIELDJONMAD){
@@ -6716,7 +6729,7 @@ static int donut_analytical_solution(int *whichvel, int *whichcoord, int optical
     // alphavisc=0.1 leads to Mdot=0.16MdotEdd (subeddd)
     // alphavisc=1.0 leads to Mdot=2.8MdotEdd (subeddc)
 
-    FTYPE alphavisc=0.4;
+    FTYPE alphavisc=0.4;            //tom: viscosity??
     FTYPE m=10.0; // Mbh in Msun
     FTYPE Mx=m;
     FTYPE mdot=7.33; // Mdot per Ledd/c^2
