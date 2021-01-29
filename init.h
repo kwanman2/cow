@@ -1021,7 +1021,7 @@ struct Ccoordparams {
 #define OUTERDEATH 1 // do it
 //#define OUTERDEATH 0 // don't do it // WALD
 #undef OUTERDEATHRADIUS
-#define OUTERDEATHRADIUS (5E3) //jane: outside this radius altering solution to prevent reflection
+#define OUTERDEATHRADIUS (5E4) //jane: outside this radius altering solution to prevent reflection  //tom: 5E3 --> 8E3 --> 5e4
 #undef OUTERDEATHGAMMAMAX
 #define OUTERDEATHGAMMAMAX (6.0)
 #undef OUTERDEATHGAMMAMAXRAD

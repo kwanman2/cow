@@ -2226,11 +2226,18 @@ int init_global(void)
           //RADNT_RHODONUT/=(2.8); // Mdot\sim 135Ledd/c^2
           //RADNT_RHODONUT*=(4.4); // Mdot\sim 135Ledd/c^2
           //RADNT_RHODONUT*=(3.75); // Mdot\sim 135Ledd/c^2
-          RADNT_RHODONUT = 5E-6; //tom: Mdot \sim 4.2     (80x32x16)
-          RADNT_RHODONUT *= (70); //tom: Mdot \sim 120
-          RADNT_RHODONUT *= (2000); //tom: Mdot \sim 46000
-          RADNT_RHODONUT /= (10); //tom: Mdot \sim 10000
-          RADNT_RHODONUT /= (2); //tom: Mdot \sim 9600
+          //RADNT_RHODONUT = 5E-8;    //tom: 
+          RADNT_RHODONUT = 5E-6; //tom:      (80x32x16)
+          RADNT_RHODONUT *= (70); //tom: Mdot \sim 130
+          RADNT_RHODONUT *= (10); //tom: Mdot \sim 780      *#*
+          RADNT_RHODONUT *= (2); //janet: Mdot \sim
+          //RADNT_RHODONUT *= (5); //tom: Mdot \sim 2900
+          //RADNT_RHODONUT *= (13); //tom: Mdot \sim 5700
+          //RADNT_RHODONUT *= (22); //tom: Mdot \sim 11000
+          //RADNT_RHODONUT *= (20); //tom: Mdot \sim 9700
+          //RADNT_RHODONUT *= (18);   //tom: Mdot \sim
+          //RADNT_RHODONUT *= (19);   //tom: Mdot \sim
+
           trifprintf("After Conditionals: RADNT_RHODONUT=%21.15g\n", RADNT_RHODONUT);
         }
 
@@ -2286,11 +2293,13 @@ int init_global(void)
 
         if (a == 0.0 && FIELDTYPE == FIELDJONMAD) {	//tom       //BH mass: 1e4
             trifprintf("Condition=4%21.15g\n", 4);
-            RADNT_RHODONUT = 5E-6; //tom: after *4, Mdot \sim 13     (80x32x16)
-            RADNT_RHODONUT *= (70); //tom: after *4, Mdot \sim 41000
-            RADNT_RHODONUT *= (2000); //tom: Mdot \sim 
-            //RADNT_RHODONUT /= (10); //tom: Mdot \sim 
-            //RADNT_RHODONUT /= (2); //tom: 
+            //RADNT_RHODONUT = 5E-8;    //tom: 
+            RADNT_RHODONUT = 5E-6; //tom:      (80x32x16)
+            RADNT_RHODONUT *= (70); //tom: Mdot \sim 
+            RADNT_RHODONUT *= (10); //tom: Mdot \sim       *#*
+            //RADNT_RHODONUT *= (5); //tom: Mdot \sim 
+            //RADNT_RHODONUT *= (13); //tom: Mdot \sim 
+            RADNT_RHODONUT *= (22); //tom: Mdot \sim 
             RADNT_RHODONUT *= (4.0);  //tom:  adjust
             trifprintf("After Conditionals: RADNT_RHODONUT=%21.15g\n", RADNT_RHODONUT);
         }
@@ -3287,7 +3296,7 @@ int init_defcoord(void)
       //      RADNT_MAXX=50.0;
       //      RADNT_MAXX=60.0;
       //      RADNT_MAXX=400.0; // what was using before, but problems at outer radial edge develop after t\sim 5600
-      RADNT_MAXX=1E4;       //tom: should set to 1E5, but leave this now
+      RADNT_MAXX=1E5;       //tom: set to 1E5
     }
     else{
       RADNT_MINX=1.8*Rhor;
@@ -6908,7 +6917,7 @@ static int donut_analytical_solution(int *whichvel, int *whichcoord, int optical
       Risco=rmso_calc(PROGRADERISCO);
     }
     else{ // SUPERMADNEW
-      Risco=10.0;       //tom: really?!     //tom: why don't calculate it       //tom: the old simulations may have wrong Risco too, thus wrong density profile ...
+      Risco=10.0;       //tom: really?!     //tom: why don't calculate it
     }
     R = MAX(Rhor,r*sin(th)) ;
 
@@ -6963,13 +6972,13 @@ static int donut_analytical_solution(int *whichvel, int *whichcoord, int optical
       rho = rho*pow(r/Rtrans,rhopowisco);
     }
 
-    /*
+    
     // jane: truncate the disk
-#define NTROUT (500.0)
+#define NTROUT (1000.0)      // <-- Tom: ~2R_t
     if(r>NTROUT){
       rho*=exp(-(r-NTROUT)/72.38); //rho drops by 10^3 from NTROUT to R=200
     }
-    */      //tom: remove the truncation at the moment
+          //tom: remove the truncation at the moment; 29/1: add back
 
     // jane: see if should still use backup non-torus values
     if(rho<ppback[RHO]){
@@ -7834,7 +7843,7 @@ int init_vpot_user(int *whichcoord, int l, SFTYPE time, int i, int j, int k, int
 #define JONMADHPOW (4.0)
 #define JONMADR0 (-5.0)
 #define JONMADRIN (2.0)
-#define JONMADROUT (700) //jane: transition to monopolar field      //tom
+#define JONMADROUT (1000) //jane: transition to monopolar field      //tom
 
     FTYPE jonmadhpow;
     FTYPE interp;
@@ -9745,7 +9754,7 @@ void adjust_fluxctstag_emfs(SFTYPE fluxtime, FTYPE (*prim)[NSTORE2][NSTORE3][NPR
 //#include "opacityopaltables.c"
 
 
-
+#define ORIG (1)   //tom: opacities use the original mckinney 14/15
 
 // KAPPAUSER is optical depth per unit length per unit rest-mass energy density
 // calc_kappa_user and calc_kappan_user and calc_kappaes_user return optical depth per unit length.
@@ -9757,8 +9766,27 @@ FTYPE calc_kappa_user(FTYPE rho, FTYPE B, FTYPE Tg,FTYPE Tr,FTYPE x,FTYPE y,FTYP
   //    return(0.0);
   //  }
   //  else return(KAPPAUSER(rho,B,Tg,Tr));
+#if (WHICHPROBLEM==RADDONUT && !ORIG)
+    return(kappa_func_fits(ISKAPPAEABS, rho, B, Tg, Tr, varexpf));        //tom
+#else
   return(KAPPAUSER(rho,B,Tg,Tr));
+  trifprintf("Use the original opacities from mckinney 15\n");
+#endif
 }
+
+// energy emission
+FTYPE calc_kappaemit_user(FTYPE rho, FTYPE B, FTYPE Tg, FTYPE Tr, FTYPE varexpf, FTYPE x, FTYPE y, FTYPE z)     //mckinney 17   tom
+{
+
+#if(WHICHPROBLEM==RADDONUT && !ORIG)
+    return(kappa_func_fits(ISKAPPAEEMIT, rho, B, Tg, Tr, varexpf));
+#else
+  // if not using explicit emission kappa, then Tr must be set to Tg
+    return(KAPPAUSER(rho, B, Tg, Tg));
+#endif
+
+}
+
 
 // number absorption
 FTYPE calc_kappan_user(FTYPE rho, FTYPE B, FTYPE Tg,FTYPE Tr,FTYPE x,FTYPE y,FTYPE z)
@@ -9767,14 +9795,34 @@ FTYPE calc_kappan_user(FTYPE rho, FTYPE B, FTYPE Tg,FTYPE Tr,FTYPE x,FTYPE y,FTY
   //    return(0.0);
   //  }
   //  else return(KAPPANUSER(rho,B,Tg,Tr));
+#if (WHICHPROBLEM==RADDONUT && !ORIG)
+  return(kappa_func_fits(ISKAPPANABS, rho, B, Tg, Tr, varexpf));    //tom
+#else
   return(KAPPANUSER(rho,B,Tg,Tr));
+#endif
+}
+
+// number emission
+FTYPE calc_kappanemit_user(FTYPE rho, FTYPE B, FTYPE Tg, FTYPE Tr, FTYPE varexpf, FTYPE x, FTYPE y, FTYPE z)    //mckinney 17   tom
+{
+
+#if(WHICHPROBLEM==RADDONUT && !ORIG)
+    return(kappa_func_fits(ISKAPPANEMIT, rho, B, Tg, Tr, varexpf));
+#else
+  // if not using explicit emission kappa, then Tr must be set to Tg
+    return(KAPPANUSER(rho, B, Tg, Tg));
+#endif
+
 }
 
 //scattering
 FTYPE calc_kappaes_user(FTYPE rho, FTYPE T,FTYPE x,FTYPE y,FTYPE z)
 {  
+#if(WHICHPROBLEM==RADDONUT && !ORIG)
+  return(kappa_func_fits(ISKAPPAES, rho, B, Tg, Tr, varexpf));
+#else
   return(KAPPAESUSER(rho,T));
-
+#endif
 }
 
 
