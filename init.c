@@ -2230,7 +2230,8 @@ int init_global(void)
           RADNT_RHODONUT = 5E-6; //tom:      (80x32x16)
           RADNT_RHODONUT *= (70); //tom: Mdot \sim 130
           RADNT_RHODONUT *= (10); //tom: Mdot \sim 780      *#*
-          RADNT_RHODONUT *= (2); //janet: Mdot \sim
+          RADNT_RHODONUT *= (2); //janet: Mdot \sim 1400
+          RADNT_RHODONUT *= (4); //tom: phi resolution incrased by 2, Mdot \sim
           //RADNT_RHODONUT *= (5); //tom: Mdot \sim 2900
           //RADNT_RHODONUT *= (13); //tom: Mdot \sim 5700
           //RADNT_RHODONUT *= (22); //tom: Mdot \sim 11000
@@ -2264,7 +2265,15 @@ int init_global(void)
           RADNT_RHODONUT*=(2.0);//jane:change from 10^7 to 10^6.7
 	      RADNT_RHODONUT*=(4.0);//jane:phi resolution incrased by 2, try to get Mdot~20-30
 		  */ 
-		  RADNT_RHODONUT=7.82865722440474E-09; //tom:result of the above calculations, Mdot~15
+		  //RADNT_RHODONUT=7.82865722440474E-09; //tom:result of the above calculations, Mdot~15, Mbh~10^6 
+          RADNT_RHODONUT = 5E-6; //tom:   21   (80x32x16)
+          //RADNT_RHODONUT *= (70); //tom: Mdot \sim 
+          //RADNT_RHODONUT *= (10); //tom: Mdot \sim 1900      *#*
+          //RADNT_RHODONUT *= (5); //tom: Mdot \sim 
+          //RADNT_RHODONUT *= (13); //tom: Mdot \sim 44000
+          //RADNT_RHODONUT *= (10); //tom: higher res, tianhe-2 
+          RADNT_RHODONUT *= (4); //tom: phi resolution incrased by 2, 
+
 		  /*
 		  RADNT_RHODONUT/=(2.0*138.0);
           RADNT_RHODONUT/=(2.8); // Mdot\sim 135Ledd/c^2                                        
@@ -3288,7 +3297,7 @@ int init_defcoord(void)
     //    a=0.0; // no spin in case use MCOORD=KSCOORDS
 
     // metric stuff first
-    a = 0.5;  //tom // jane: set spin
+    a = 0.8;  //tom // jane: set spin
     
 
     if(1){
@@ -3296,7 +3305,7 @@ int init_defcoord(void)
       //      RADNT_MAXX=50.0;
       //      RADNT_MAXX=60.0;
       //      RADNT_MAXX=400.0; // what was using before, but problems at outer radial edge develop after t\sim 5600
-      RADNT_MAXX=1E5;       //tom: set to 1E5
+      RADNT_MAXX=1E4;       //tom: set to 1E5   //tom: recover back to 1e4, for a=0.8
     }
     else{
       RADNT_MINX=1.8*Rhor;
